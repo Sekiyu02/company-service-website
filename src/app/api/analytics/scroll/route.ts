@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { recordScrollEvent } from '@/lib/db'
+import { recordScrollEvent } from '@/lib/supabase-db'
 
 export async function POST(request: NextRequest) {
   try {

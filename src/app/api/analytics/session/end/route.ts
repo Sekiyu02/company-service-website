@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { endPageSession } from '@/lib/db'
+import { endPageSession } from '@/lib/supabase-db'
 
 export async function POST(request: NextRequest) {
   try {

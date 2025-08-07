@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { recordPageView } from '@/lib/db'
+import { recordPageView } from '@/lib/supabase-db'
 
 export async function POST(request: NextRequest) {
   try {

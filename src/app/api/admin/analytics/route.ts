@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken } from '@/lib/auth'
-import { getAnalytics } from '@/lib/db'
+import { getAnalytics } from '@/lib/supabase-db'
 
 export async function GET(request: NextRequest) {
   try {

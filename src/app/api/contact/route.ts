@@ -168,26 +168,23 @@ export async function POST(request: NextRequest) {
       console.log('Continuing despite auto-reply failure')
     }
 
-    // お問い合わせ統計に記録（本番環境では無効化）
-    if (process.env.NODE_ENV !== 'production') {
-      try {
-        const { recordContactSubmission } = await import('@/lib/db')
-        const forwarded = request.headers.get('x-forwarded-for')
-        const ipAddress = forwarded ? forwarded.split(', ')[0] : request.headers.get('x-real-ip') || 'unknown'
+    // お問い合わせ統計に記録（Supabase対応）
+    try {
+      const { recordContactSubmission } = await import('@/lib/supabase-db')
+      const forwarded = request.headers.get('x-forwarded-for')
+      const ipAddress = forwarded ? forwarded.split(', ')[0] : request.headers.get('x-real-ip') || 'unknown'
 
-        await recordContactSubmission({
-          name,
-          company,
-          email,
-          inquiryType: inquiry,
-          ipAddress
-        })
-        console.log('Contact submission recorded successfully')
-      } catch (dbError) {
-        console.error('Database recording failed:', dbError)
-      }
-    } else {
-      console.log('Database recording skipped in production environment')
+      await recordContactSubmission({
+        name,
+        company,
+        email,
+        inquiryType: inquiry,
+        ipAddress
+      })
+      console.log('Contact submission recorded successfully in Supabase')
+    } catch (dbError) {
+      console.error('Supabase recording failed, but email was sent:', dbError)
+      // データベースエラーでもメール送信は成功したので処理続行
     }
 
     return NextResponse.json(

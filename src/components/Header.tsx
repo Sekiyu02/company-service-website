@@ -38,7 +38,7 @@ const Header = () => {
               F
             </div>
             <div className={`transition-colors duration-300 ${
-              isScrolled ? 'text-secondary-800' : 'text-white'
+              isScrolled ? 'text-secondary-800' : 'text-white drop-shadow-md'
             }`}>
               <div className="text-xl lg:text-2xl font-bold">富楽ファイン</div>
               <div className="text-xs lg:text-sm font-light tracking-wider opacity-80">FurakuFine</div>
@@ -50,7 +50,7 @@ const Header = () => {
             <Link
               href="/"
               className={`font-medium transition-colors duration-200 hover:text-primary-500 ${
-                isScrolled ? 'text-secondary-700' : 'text-white/90'
+                isScrolled ? 'text-secondary-700' : 'text-white/95 drop-shadow-sm'
               }`}
             >
               ホーム
@@ -58,7 +58,7 @@ const Header = () => {
             <Link
               href="/about"
               className={`font-medium transition-colors duration-200 hover:text-primary-500 ${
-                isScrolled ? 'text-secondary-700' : 'text-white/90'
+                isScrolled ? 'text-secondary-700' : 'text-white/95 drop-shadow-sm'
               }`}
             >
               代表挨拶
@@ -66,7 +66,7 @@ const Header = () => {
             <Link
               href="/company"
               className={`font-medium transition-colors duration-200 hover:text-primary-500 ${
-                isScrolled ? 'text-secondary-700' : 'text-white/90'
+                isScrolled ? 'text-secondary-700' : 'text-white/95 drop-shadow-sm'
               }`}
             >
               会社概要
@@ -85,7 +85,7 @@ const Header = () => {
             className={`lg:hidden p-2 rounded-lg transition-colors duration-200 ${
               isScrolled 
                 ? 'text-secondary-700 hover:bg-secondary-100' 
-                : 'text-white hover:bg-white/10'
+                : 'text-white/95 hover:bg-white/10 drop-shadow-sm'
             } focus:outline-none focus:ring-2 focus:ring-primary-500`}
             aria-label="メニューを開く"
           >

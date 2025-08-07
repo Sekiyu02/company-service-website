@@ -15,6 +15,7 @@ const Footer = () => {
               <p>株式会社富楽ファイン</p>
               <p>千葉県東金市東新宿12-5 富楽ビル301</p>
               <p>TEL: 080-6547-1033(代表)</p>
+              <p>営業時間：年中無休</p>
             </div>
           </div>
 
@@ -71,10 +72,18 @@ const Footer = () => {
         </div>
 
         {/* コピーライト */}
-        <div className="border-t border-gray-800 pt-8 mt-12 text-center">
-          <p className="text-gray-400 text-sm">
-            © 2024 株式会社富楽ファイン. All rights reserved.
-          </p>
+        <div className="border-t border-gray-800 pt-8 mt-12">
+          <div className="flex justify-between items-center">
+            <p className="text-gray-400 text-sm">
+              © 2024 株式会社富楽ファイン. All rights reserved.
+            </p>
+            <Link
+              href="/admin"
+              className="text-gray-600 hover:text-gray-400 text-xs opacity-50 hover:opacity-75 transition-opacity duration-200"
+            >
+              Admin
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

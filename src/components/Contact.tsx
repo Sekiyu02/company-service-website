@@ -12,6 +12,12 @@ const Contact = () => {
       <div className="container-custom relative">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16 animate-fade-in-up">
+            <div className="inline-flex items-center space-x-2 mb-6">
+              <div className="bg-white/25 backdrop-blur-sm px-8 py-4 rounded-full border-2 border-white/40 shadow-lg animate-pulse">
+                <span className="text-xl md:text-2xl font-bold text-white tracking-wide">初回相談無料</span>
+              </div>
+            </div>
+            
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
               まずはお気軽に<br />
               ご相談ください
@@ -94,9 +100,15 @@ const Contact = () => {
           {/* 追加メッセージ */}
           <div className="text-center mt-16 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
             <div className="max-w-3xl mx-auto">
-              <p className="text-lg opacity-90 leading-relaxed">
-                千葉・東京を中心に、中小企業様の映像制作をサポートしています。<br />
-                初回のご相談は無料です。お客様の課題やご要望をお聞かせください。
+              <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mb-6">
+                <p className="text-lg font-semibold mb-2">初回相談無料！</p>
+                <p className="text-base opacity-90 leading-relaxed">
+                  お客様の課題やご要望をお聞かせください。<br />
+                  映像制作が初めての方も安心してご相談いただけます。
+                </p>
+              </div>
+              <p className="text-base opacity-80 leading-relaxed">
+                千葉・東京を中心に、中小企業様の映像制作をサポートしています。
               </p>
             </div>
           </div>

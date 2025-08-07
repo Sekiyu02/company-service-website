@@ -19,22 +19,33 @@ const AboutSection = () => {
             {/* 代表写真 */}
             <div className="order-2 lg:order-1">
               <div className="relative">
-                <div className="w-full max-w-md mx-auto bg-gradient-to-br from-primary-100 to-secondary-100 rounded-2xl p-6">
-                  <div className="aspect-square bg-white rounded-xl overflow-hidden shadow-inner">
-                    <Image
-                      src="/images/representative.jpg"
-                      alt="代表取締役 冨山大貴"
-                      width={400}
-                      height={400}
-                      className="w-full h-full object-contain"
-                      priority
-                    />
+                <div className="w-full max-w-md mx-auto relative">
+                  {/* メインフレーム */}
+                  <div className="relative bg-gradient-to-br from-white via-gray-50 to-primary-50/30 rounded-3xl p-8 shadow-xl border border-gray-100">
+                    {/* 内側のフレーム */}
+                    <div className="relative">
+                      <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl p-1 shadow-inner">
+                        <div className="w-full h-full bg-white rounded-xl overflow-hidden shadow-lg">
+                          <Image
+                            src="/images/representative.jpg"
+                            alt="代表取締役 冨山大貴"
+                            width={400}
+                            height={400}
+                            className="w-full h-full object-contain"
+                            priority
+                          />
+                        </div>
+                      </div>
+                      {/* コーナー装飾 */}
+                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full shadow-md"></div>
+                      <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-gradient-to-br from-accent-500 to-accent-600 rounded-full shadow-md"></div>
+                    </div>
                   </div>
+                  
+                  {/* 背景装飾 */}
+                  <div className="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br from-primary-200 to-primary-300 rounded-full opacity-30 blur-sm"></div>
+                  <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-br from-accent-200 to-accent-300 rounded-full opacity-20 blur-sm"></div>
                 </div>
-                
-                {/* 装飾要素 */}
-                <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-primary-300 to-secondary-300 rounded-full opacity-20"></div>
-                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-secondary-300 to-primary-300 rounded-full opacity-20"></div>
               </div>
               
               {/* 代表者情報 */}
@@ -62,7 +73,7 @@ const AboutSection = () => {
                 <div className="text-center lg:text-left">
                   <div className="font-['Noto_Serif_JP'] text-3xl md:text-4xl lg:text-5xl font-medium text-gray-900 leading-relaxed mb-8 tracking-wide">
                     すべての人に<br />
-                    <span className="text-primary-600 font-bold">"豊かさ"</span>と<span className="text-secondary-600 font-bold">"楽しさ"</span>を
+                    <span className="text-primary-600 font-bold">"豊かさ"</span>と<span className="text-primary-600 font-bold">"楽しさ"</span>を
                   </div>
                 </div>
 
@@ -79,17 +90,17 @@ const AboutSection = () => {
 
                   {/* 3つの要素 */}
                   <div className="bg-gradient-to-br from-white via-gray-50 to-primary-50/30 rounded-2xl p-8 border border-gray-100 shadow-sm">
-                    <div className="grid grid-cols-3 gap-6 text-center">
+                    <div className="grid grid-cols-3 gap-6 text-center items-center">
                       <div className="space-y-3">
                         <div className="font-['Noto_Serif_JP'] text-4xl font-bold text-primary-600">"富"</div>
                         <div className="font-['Noto_Sans_JP'] text-sm text-gray-600 font-medium tracking-wider">豊かさ</div>
                       </div>
                       <div className="space-y-3">
-                        <div className="font-['Noto_Serif_JP'] text-4xl font-bold text-secondary-600">"楽"</div>
+                        <div className="font-['Noto_Serif_JP'] text-4xl font-bold text-primary-600">"楽"</div>
                         <div className="font-['Noto_Sans_JP'] text-sm text-gray-600 font-medium tracking-wider">楽しさ</div>
                       </div>
                       <div className="space-y-3">
-                        <div className="font-['Noto_Sans_JP'] text-lg font-bold text-primary-700">ファイン</div>
+                        <div className="font-['Noto_Sans_JP'] text-4xl font-bold text-primary-600">ファイン</div>
                         <div className="font-['Noto_Sans_JP'] text-sm text-gray-600 font-medium tracking-wider">なんとかする力</div>
                       </div>
                     </div>

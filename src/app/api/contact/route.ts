@@ -17,16 +17,38 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // 本番環境のデバッグ情報
+    console.log('Environment variables check:', {
+      SMTP_HOST: process.env.SMTP_HOST ? 'SET' : 'NOT_SET',
+      SMTP_PORT: process.env.SMTP_PORT || 'DEFAULT_587',
+      SMTP_USER: process.env.SMTP_USER ? 'SET' : 'NOT_SET',
+      SMTP_PASS: process.env.SMTP_PASS ? 'SET' : 'NOT_SET',
+      SMTP_FROM: process.env.SMTP_FROM ? 'SET' : 'NOT_SET'
+    })
+
     // メール設定（環境変数を使用）
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
+    const smtpConfig = {
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
       port: parseInt(process.env.SMTP_PORT || '587'),
       secure: process.env.SMTP_PORT === '465',
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: process.env.SMTP_USER || 'info@furakufine.com',
+        pass: process.env.SMTP_PASS || 'rnkiuhpuufpspjvl',
       },
+      tls: {
+        rejectUnauthorized: false
+      }
+    }
+
+    console.log('SMTP Config:', {
+      ...smtpConfig,
+      auth: {
+        user: smtpConfig.auth.user,
+        pass: smtpConfig.auth.pass ? '***HIDDEN***' : 'NOT_SET'
+      }
     })
+
+    const transporter = nodemailer.createTransport(smtpConfig)
 
     // メール内容
     const mailOptions = {

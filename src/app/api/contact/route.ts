@@ -147,20 +147,44 @@ export async function POST(request: NextRequest) {
     }
 
     // メール送信
-    await transporter.sendMail(mailOptions)
-    await transporter.sendMail(autoReplyOptions)
+    console.log('Attempting to send email...')
+    
+    try {
+      console.log('Sending notification email...')
+      await transporter.sendMail(mailOptions)
+      console.log('Notification email sent successfully')
+    } catch (emailError) {
+      console.error('Notification email failed:', emailError)
+      throw new Error(`Notification email failed: ${emailError instanceof Error ? emailError.message : 'Unknown error'}`)
+    }
 
-    // お問い合わせ統計に記録
-    const forwarded = request.headers.get('x-forwarded-for')
-    const ipAddress = forwarded ? forwarded.split(', ')[0] : request.headers.get('x-real-ip') || 'unknown'
+    try {
+      console.log('Sending auto-reply email...')
+      await transporter.sendMail(autoReplyOptions)
+      console.log('Auto-reply email sent successfully')
+    } catch (replyError) {
+      console.error('Auto-reply email failed:', replyError)
+      // 自動返信が失敗しても、通知メールは送信済みなのでエラーとしない
+      console.log('Continuing despite auto-reply failure')
+    }
 
-    await recordContactSubmission({
-      name,
-      company,
-      email,
-      inquiryType: inquiry,
-      ipAddress
-    })
+    // お問い合わせ統計に記録（本番環境では一時的に無効化）
+    try {
+      const forwarded = request.headers.get('x-forwarded-for')
+      const ipAddress = forwarded ? forwarded.split(', ')[0] : request.headers.get('x-real-ip') || 'unknown'
+
+      await recordContactSubmission({
+        name,
+        company,
+        email,
+        inquiryType: inquiry,
+        ipAddress
+      })
+      console.log('Contact submission recorded successfully')
+    } catch (dbError) {
+      console.error('Database recording failed, but email will proceed:', dbError)
+      // データベースエラーでもメール送信は続行
+    }
 
     return NextResponse.json(
       { message: 'お問い合わせを送信しました' },

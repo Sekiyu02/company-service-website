@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
-import { recordContactSubmission } from '@/lib/db'
+// import { recordContactSubmission } from '@/lib/db' // 本番環境では無効化
 
 export async function POST(request: NextRequest) {
   console.log('=== Contact API Called ===')
@@ -168,22 +168,26 @@ export async function POST(request: NextRequest) {
       console.log('Continuing despite auto-reply failure')
     }
 
-    // お問い合わせ統計に記録（本番環境では一時的に無効化）
-    try {
-      const forwarded = request.headers.get('x-forwarded-for')
-      const ipAddress = forwarded ? forwarded.split(', ')[0] : request.headers.get('x-real-ip') || 'unknown'
+    // お問い合わせ統計に記録（本番環境では無効化）
+    if (process.env.NODE_ENV !== 'production') {
+      try {
+        const { recordContactSubmission } = await import('@/lib/db')
+        const forwarded = request.headers.get('x-forwarded-for')
+        const ipAddress = forwarded ? forwarded.split(', ')[0] : request.headers.get('x-real-ip') || 'unknown'
 
-      await recordContactSubmission({
-        name,
-        company,
-        email,
-        inquiryType: inquiry,
-        ipAddress
-      })
-      console.log('Contact submission recorded successfully')
-    } catch (dbError) {
-      console.error('Database recording failed, but email will proceed:', dbError)
-      // データベースエラーでもメール送信は続行
+        await recordContactSubmission({
+          name,
+          company,
+          email,
+          inquiryType: inquiry,
+          ipAddress
+        })
+        console.log('Contact submission recorded successfully')
+      } catch (dbError) {
+        console.error('Database recording failed:', dbError)
+      }
+    } else {
+      console.log('Database recording skipped in production environment')
     }
 
     return NextResponse.json(

@@ -7,10 +7,15 @@ const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'default-secre
 export async function verifyPassword(password: string): Promise<boolean> {
   const adminPassword = process.env.ADMIN_PASSWORD || 'furakufine0120'
   
+  // 本番環境でもデバッグ用（一時的）
+  console.log('Environment:', process.env.NODE_ENV)
+  console.log('Password set:', adminPassword ? 'Yes' : 'No')
+  
   // 本番環境では、ハッシュ化されたパスワードと比較
   // 開発環境では簡単な文字列比較
   if (process.env.NODE_ENV === 'production') {
-    return bcrypt.compare(password, adminPassword)
+    // 本番環境でも一時的に平文比較
+    return password === adminPassword
   } else {
     return password === adminPassword
   }

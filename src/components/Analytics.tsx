@@ -14,6 +14,11 @@ const Analytics = () => {
   })
 
   useEffect(() => {
+    // 本番環境ではアナリティクスを無効化
+    if (process.env.NODE_ENV === 'production') {
+      console.log('Analytics disabled in production environment')
+      return
+    }
     // セッションIDを生成（初回訪問時のみ）
     let sessionId = localStorage.getItem('session_id')
     if (!sessionId) {

@@ -1,25 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { verifyToken } from '@/lib/auth'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 import { getAnalytics } from '@/lib/supabase-db'
 
 export async function GET(request: NextRequest) {
   try {
-    // Cookieからトークンを取得
-    const token = request.cookies.get('admin-token')?.value
+    const cookieStore = cookies()
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
 
-    if (!token) {
+    // 認証チェック
+    const { data: { session }, error } = await supabase.auth.getSession()
+    
+    if (error || !session) {
       return NextResponse.json(
         { error: '認証が必要です' },
         { status: 401 }
       )
     }
 
-    // トークンを検証
-    const isValid = await verifyToken(token)
-    if (!isValid) {
+    // 管理者権限チェック
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user?.user_metadata?.is_admin) {
       return NextResponse.json(
-        { error: '認証が無効です' },
-        { status: 401 }
+        { error: '管理者権限が必要です' },
+        { status: 403 }
       )
     }
 

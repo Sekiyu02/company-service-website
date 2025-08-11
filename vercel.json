@@ -5,7 +5,7 @@
       "has": [
         {
           "type": "host",
-          "value": "www.furakufine.co.jp"
+          "value": "company-service-website.vercel.app"
         }
       ],
       "destination": "https://furakufine.co.jp/$1",
@@ -16,7 +16,7 @@
       "has": [
         {
           "type": "host",
-          "value": "company-service-website.vercel.app"
+          "value": "company-service-website-yuna-sekiguchis-projects.vercel.app"
         }
       ],
       "destination": "https://furakufine.co.jp/$1",

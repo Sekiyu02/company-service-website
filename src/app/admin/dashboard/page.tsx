@@ -223,19 +223,14 @@ const AdminDashboard = () => {
           <div className="bg-white rounded-xl shadow-sm p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">ページ別パフォーマンス</h2>
             <div className="space-y-3">
-              {analytics?.pageDurations.slice(0, 5).map((page, index) => (
+              {analytics?.pageDurations?.slice(0, 5).map((page, index) => (
                 <div key={index} className="border-b pb-2">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm text-gray-600 truncate max-w-[200px]">{page.page_path}</span>
                     <span className="text-sm font-medium text-gray-900">{formatDuration(page.avg_duration)}</span>
                   </div>
-                  <div className="flex items-center text-xs text-gray-500">
-                    <span>スクロール: {Math.round(page.avg_scroll)}%</span>
-                    <span className="mx-2">•</span>
-                    <span>セッション: {page.sessions}</span>
-                  </div>
                 </div>
-              ))}
+              )) || <p className="text-sm text-gray-500">データがありません</p>}
             </div>
           </div>
         </div>

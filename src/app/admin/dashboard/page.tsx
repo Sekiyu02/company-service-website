@@ -190,7 +190,7 @@ const AdminDashboard = () => {
         <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">日別アクセス数</h2>
           <div className="h-64 flex items-end justify-between space-x-2">
-            {analytics?.dailyStats.map((stat, index) => (
+            {analytics?.dailyStats?.map((stat, index) => (
               <div key={index} className="flex-1 flex flex-col items-center">
                 <div 
                   className="w-full bg-gradient-to-t from-primary-500 to-primary-400 rounded-t"
@@ -210,12 +210,12 @@ const AdminDashboard = () => {
           <div className="bg-white rounded-xl shadow-sm p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">人気ページ</h2>
             <div className="space-y-3">
-              {analytics?.topPages.map((page, index) => (
+              {analytics?.topPages?.map((page, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <span className="text-sm text-gray-600 truncate max-w-[200px]">{page.page_path}</span>
-                  <span className="text-sm font-medium text-gray-900">{page.view_count.toLocaleString()}</span>
+                  <span className="text-sm font-medium text-gray-900">{(page.view_count || 0).toLocaleString()}</span>
                 </div>
-              ))}
+              )) || <p className="text-sm text-gray-500">データがありません</p>}
             </div>
           </div>
 
@@ -255,7 +255,7 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {analytics?.recentContacts.map((contact, index) => (
+                {analytics?.recentContacts?.map((contact, index) => (
                   <tr key={index}>
                     <td className="py-3 text-sm text-gray-900">
                       {new Date(contact.timestamp).toLocaleDateString('ja-JP')}
@@ -279,7 +279,7 @@ const AdminDashboard = () => {
         <div className="bg-white rounded-xl shadow-sm p-6 mt-8">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">よくクリックされる要素</h2>
           <div className="space-y-3">
-            {analytics?.topClickedElements.map((element, index) => (
+            {analytics?.topClickedElements?.map((element, index) => (
               <div key={index} className="flex items-center justify-between py-2 border-b">
                 <div>
                   <span className="text-sm font-medium text-gray-900">{element.element_text}</span>

@@ -2,12 +2,15 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 const AdminLogin = () => {
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
+  const supabase = createClientComponentClient()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -15,23 +18,28 @@ const AdminLogin = () => {
     setError('')
 
     try {
-      const response = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ password }),
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       })
 
-      const result = await response.json()
-
-      if (response.ok) {
-        router.push('/admin/dashboard')
-      } else {
-        setError(result.error || 'ログインに失敗しました')
+      if (error) {
+        setError('メールアドレスまたはパスワードが間違っています')
+        return
       }
+
+      // 管理者権限の確認
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user?.user_metadata?.is_admin) {
+        await supabase.auth.signOut()
+        setError('管理者権限がありません')
+        return
+      }
+
+      router.push('/admin/dashboard')
+      router.refresh()
     } catch (error) {
-      setError('ネットワークエラーが発生しました')
+      setError('ログインに失敗しました')
     } finally {
       setIsLoading(false)
     }
@@ -51,6 +59,21 @@ const AdminLogin = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
+              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                メールアドレス
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
+                placeholder="admin@example.com"
+                required
+              />
+            </div>
+
+            <div>
               <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
                 パスワード
               </label>
@@ -60,7 +83,7 @@ const AdminLogin = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
-                placeholder="管理者パスワードを入力してください"
+                placeholder="パスワードを入力してください"
                 required
               />
             </div>

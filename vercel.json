@@ -1,0 +1,26 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.furakufine.co.jp"
+        }
+      ],
+      "destination": "https://furakufine.co.jp/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "company-service-website.vercel.app"
+        }
+      ],
+      "destination": "https://furakufine.co.jp/$1",
+      "permanent": true
+    }
+  ]
+}

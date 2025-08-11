@@ -26,7 +26,7 @@ const Hero = () => {
                 </h1>
                 
                 <p className="text-xl md:text-2xl text-white/90 leading-relaxed">
-                  映像制作・広報支援で、あなたの想いを確実に届けます
+                  千葉の映像制作会社 富楽ファイン｜採用動画・PR動画・集客動画
                 </p>
               </div>
 

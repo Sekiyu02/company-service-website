@@ -12,7 +12,7 @@ const Footer = () => {
               すべての人に"豊かさ"と"楽しさ"を
             </p>
             <div className="space-y-2 text-sm text-gray-400">
-              <p>株式会社富楽ファイン</p>
+              <p>株式会社富楽ファイン（ふらくふぁいん）</p>
               <p>千葉県東金市東新宿12-5 富楽ビル301</p>
               <p>TEL: 080-6547-1033(代表)</p>
               <p>営業時間：年中無休</p>
@@ -54,11 +54,11 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">サービス</h3>
             <div className="space-y-2 text-sm text-gray-400">
-              <p>採用ブランディング映像</p>
-              <p>集客・PR映像</p>
-              <p>イベントプロモーション動画</p>
-              <p>SNS運用代行</p>
-              <p>撮影・編集サポート</p>
+              <p>採用動画制作・採用ブランディング</p>
+              <p>PR動画・集客動画制作</p>
+              <p>イベント撮影・プロモーション動画</p>
+              <p>SNS運用代行・動画コンテンツ制作</p>
+              <p>映像制作・動画編集サポート</p>
             </div>
             <div className="mt-6">
               <Link

@@ -1,24 +1,19 @@
 import bcrypt from 'bcryptjs'
 import { SignJWT, jwtVerify } from 'jose'
 
-const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'default-secret')
+if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET is not defined in environment variables')
+}
+const secret = new TextEncoder().encode(process.env.JWT_SECRET)
 
 // パスワードを検証
 export async function verifyPassword(password: string): Promise<boolean> {
-  const adminPassword = process.env.ADMIN_PASSWORD || 'furakufine0120'
-  
-  // 本番環境でもデバッグ用（一時的）
-  console.log('Environment:', process.env.NODE_ENV)
-  console.log('Password set:', adminPassword ? 'Yes' : 'No')
-  
-  // 本番環境では、ハッシュ化されたパスワードと比較
-  // 開発環境では簡単な文字列比較
-  if (process.env.NODE_ENV === 'production') {
-    // 本番環境でも一時的に平文比較
-    return password === adminPassword
-  } else {
-    return password === adminPassword
+  if (!process.env.ADMIN_PASSWORD_HASH) {
+    throw new Error('ADMIN_PASSWORD_HASH is not defined in environment variables')
   }
+  
+  // bcryptでハッシュ化されたパスワードと比較
+  return await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH)
 }
 
 // JWTトークンを生成

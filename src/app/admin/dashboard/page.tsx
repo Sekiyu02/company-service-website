@@ -7,7 +7,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 interface Analytics {
   totalPageViews: number
   uniqueVisitors: number
-  topPages: Array<{ page_path: string; views: number }>
+  topPages: Array<{ page_path: string; view_count: number }>
   recentContacts: Array<{
     name: string
     company: string
@@ -15,19 +15,17 @@ interface Analytics {
     inquiry_type: string
     timestamp: string
   }>
-  dailyStats: Array<{ date: string; views: number }>
+  dailyStats: Array<{ date: string; page_views: number; unique_visitors: number }>
   avgSessionDuration: number
   avgScrollDepth: number
   topClickedElements: Array<{
     element_type: string
     element_text: string
-    clicks: number
+    click_count: number
   }>
   pageDurations: Array<{
     page_path: string
     avg_duration: number
-    avg_scroll: number
-    sessions: number
   }>
   bounceRate: number
 }
@@ -197,7 +195,7 @@ const AdminDashboard = () => {
                 <div 
                   className="w-full bg-gradient-to-t from-primary-500 to-primary-400 rounded-t"
                   style={{ 
-                    height: `${(stat.views / Math.max(...(analytics?.dailyStats.map(s => s.views) || [1]))) * 100}%`,
+                    height: `${(stat.page_views / Math.max(...(analytics?.dailyStats.map(s => s.page_views) || [1]))) * 100}%`,
                     minHeight: '4px'
                   }}
                 />
@@ -215,7 +213,7 @@ const AdminDashboard = () => {
               {analytics?.topPages.map((page, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <span className="text-sm text-gray-600 truncate max-w-[200px]">{page.page_path}</span>
-                  <span className="text-sm font-medium text-gray-900">{page.views.toLocaleString()}</span>
+                  <span className="text-sm font-medium text-gray-900">{page.view_count.toLocaleString()}</span>
                 </div>
               ))}
             </div>
@@ -287,7 +285,7 @@ const AdminDashboard = () => {
                   <span className="text-sm font-medium text-gray-900">{element.element_text}</span>
                   <span className="text-xs text-gray-500 ml-2">({element.element_type})</span>
                 </div>
-                <span className="text-sm font-semibold text-primary-600">{element.clicks}クリック</span>
+                <span className="text-sm font-semibold text-primary-600">{element.click_count}クリック</span>
               </div>
             ))}
           </div>

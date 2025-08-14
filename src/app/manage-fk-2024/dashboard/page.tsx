@@ -36,8 +36,6 @@ const AdminDashboard = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [userEmail, setUserEmail] = useState('')
-  const [isResetting, setIsResetting] = useState(false)
-  const [showResetConfirm, setShowResetConfirm] = useState(false)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const router = useRouter()
@@ -106,38 +104,6 @@ const AdminDashboard = () => {
     }
   }
 
-  const handleResetData = async () => {
-    if (!showResetConfirm) {
-      setShowResetConfirm(true)
-      return
-    }
-
-    setIsResetting(true)
-    setShowResetConfirm(false)
-
-    try {
-      const response = await fetch('/api/analytics/reset', {
-        method: 'DELETE'
-      })
-
-      if (!response.ok) {
-        throw new Error('リセットに失敗しました')
-      }
-
-      const result = await response.json()
-      console.log('Reset result:', result)
-      
-      // データを再取得
-      await fetchAnalytics()
-      
-      alert('アナリティクスデータをリセットしました')
-    } catch (error) {
-      console.error('Reset error:', error)
-      alert('データのリセットに失敗しました')
-    } finally {
-      setIsResetting(false)
-    }
-  }
 
   const formatDuration = (seconds: number) => {
     if (seconds < 60) return `${Math.round(seconds)}秒`
@@ -201,30 +167,6 @@ const AdminDashboard = () => {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">{userEmail}</span>
-              <button
-                onClick={handleResetData}
-                disabled={isResetting}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                  showResetConfirm
-                    ? 'bg-red-600 text-white hover:bg-red-700'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                } ${isResetting ? 'opacity-50 cursor-not-allowed' : ''}`}
-              >
-                {isResetting
-                  ? 'リセット中...'
-                  : showResetConfirm
-                  ? '本当にリセット？'
-                  : 'データリセット'
-                }
-              </button>
-              {showResetConfirm && (
-                <button
-                  onClick={() => setShowResetConfirm(false)}
-                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-700 font-medium"
-                >
-                  キャンセル
-                </button>
-              )}
               <button
                 onClick={handleLogout}
                 className="px-4 py-2 text-sm text-red-600 hover:text-red-700 font-medium"

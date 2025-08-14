@@ -89,11 +89,22 @@ const TargetAppeal = () => {
               </div>
             </div>
             
-            {/* 右側の画像スペース */}
-            <div className="lg:w-1/2 flex justify-end hidden lg:block"></div>
+            {/* 右側の画像スペース - デスクトップのみ */}
+            <div className="hidden lg:block lg:w-1/2"></div>
           </div>
 
-          {/* 画像を右側に配置 */}
+          {/* 画像 - モバイルとデスクトップで異なる配置 */}
+          {/* モバイル・タブレット用画像 */}
+          <div className="lg:hidden mt-8 mb-4">
+            <img 
+              src="/images/target-appeal-bg.png" 
+              alt="映像制作チーム" 
+              className="w-full max-w-md mx-auto object-contain"
+              style={{ maxHeight: '300px' }}
+            />
+          </div>
+          
+          {/* デスクトップ用画像 */}
           <div 
             className="absolute bottom-0 right-0 z-10 hidden lg:block"
             style={{

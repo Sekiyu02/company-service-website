@@ -1,0 +1,17 @@
+User-agent: *
+Disallow: /manage-fk-2024
+Disallow: /manage-fk-2024/
+Disallow: /api/
+Crawl-delay: 1
+
+User-agent: Googlebot
+Disallow: /manage-fk-2024
+Disallow: /manage-fk-2024/
+Disallow: /api/
+
+User-agent: Bingbot
+Disallow: /manage-fk-2024
+Disallow: /manage-fk-2024/
+Disallow: /api/
+
+Sitemap: https://furakufine.co.jp/sitemap.xml

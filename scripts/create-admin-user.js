@@ -41,7 +41,7 @@ async function createAdminUser() {
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     console.log('📧 メールアドレス:', adminEmail)
     console.log('🔐 パスワード    :', adminPassword)
-    console.log('🌐 ログインURL   : https://furakufine.co.jp/admin')
+    console.log('🌐 ログインURL   : https://furakufine.co.jp/manage-fk-2024')
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     console.log('')
     console.log('⚠️  重要:')

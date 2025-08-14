@@ -36,7 +36,7 @@ const AdminLogin = () => {
         return
       }
 
-      router.push('/admin/dashboard')
+      router.push('/manage-fk-2024/dashboard')
       router.refresh()
     } catch (error) {
       setError('ログインに失敗しました')

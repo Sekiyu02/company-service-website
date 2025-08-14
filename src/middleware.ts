@@ -7,12 +7,12 @@ export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname
 
   // 管理画面へのアクセス制御
-  if (pathname.startsWith('/admin/dashboard')) {
+  if (pathname.startsWith('/manage-fk-2024/dashboard')) {
     const supabase = createMiddlewareClient({ req, res })
     const { data: { session } } = await supabase.auth.getSession()
 
     if (!session) {
-      return NextResponse.redirect(new URL('/admin', req.url))
+      return NextResponse.redirect(new URL('/manage-fk-2024', req.url))
     }
 
     // 管理者権限の確認（ユーザーのメタデータまたはロールをチェック）
@@ -26,5 +26,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/dashboard/:path*']
+  matcher: ['/manage-fk-2024/dashboard/:path*']
 }

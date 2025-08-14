@@ -47,13 +47,13 @@ const AdminDashboard = () => {
     const { data: { session } } = await supabase.auth.getSession()
     
     if (!session) {
-      router.push('/admin')
+      router.push('/manage-fk-2024')
       return
     }
 
     const { data: { user } } = await supabase.auth.getUser()
     if (!user?.user_metadata?.is_admin) {
-      router.push('/admin')
+      router.push('/manage-fk-2024')
       return
     }
 
@@ -62,12 +62,12 @@ const AdminDashboard = () => {
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
-    router.push('/admin')
+    router.push('/manage-fk-2024')
   }
 
   const fetchAnalytics = async () => {
     try {
-      const response = await fetch('/api/admin/analytics')
+      const response = await fetch('/api/analytics/dashboard')
       
       if (!response.ok) {
         throw new Error('データの取得に失敗しました')
@@ -111,7 +111,7 @@ const AdminDashboard = () => {
         <div className="text-center">
           <p className="text-red-600 mb-4">{error}</p>
           <button
-            onClick={() => router.push('/admin')}
+            onClick={() => router.push('/manage-fk-2024')}
             className="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
           >
             ログインページへ

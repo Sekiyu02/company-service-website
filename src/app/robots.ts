@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/admin/', '/api/'],
+      disallow: ['/manage-fk-2024/', '/api/'],
     },
     sitemap: 'https://furakufine.co.jp/sitemap.xml',
   }

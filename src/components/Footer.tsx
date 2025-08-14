@@ -73,17 +73,9 @@ const Footer = () => {
 
         {/* コピーライト */}
         <div className="border-t border-gray-800 pt-8 mt-12">
-          <div className="flex justify-between items-center">
-            <p className="text-gray-400 text-sm">
-              © 2024 株式会社富楽ファイン. All rights reserved.
-            </p>
-            <Link
-              href="/admin"
-              className="text-gray-600 hover:text-gray-400 text-xs opacity-50 hover:opacity-75 transition-opacity duration-200"
-            >
-              Admin
-            </Link>
-          </div>
+          <p className="text-gray-400 text-sm text-center">
+            © 2024 株式会社富楽ファイン. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

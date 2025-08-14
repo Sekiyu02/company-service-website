@@ -80,7 +80,7 @@ async function insertTestData() {
     console.log(`- お問い合わせ: ${contacts.length}件`)
     console.log('')
     console.log('🌐 管理ダッシュボードで確認してください:')
-    console.log('https://furakufine.co.jp/admin/dashboard')
+    console.log('https://furakufine.co.jp/manage-fk-2024/dashboard')
     
   } catch (err) {
     console.error('❌ テストデータ作成エラー:', err.message)

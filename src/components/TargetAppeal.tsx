@@ -68,12 +68,12 @@ const TargetAppeal = () => {
           {/* CTA */}
           <div className="relative pt-8 animate-fade-in-up lg:flex lg:items-end lg:justify-between" style={{ animationDelay: '0.3s' }}>
             <div className="lg:w-1/2 lg:pr-8 space-y-6 text-center lg:text-left">
-              <div className="relative bg-gradient-to-r from-primary-50/90 via-white/95 to-primary-50/90 backdrop-blur-sm border border-primary-200/60 rounded-2xl py-8 px-6 md:px-8 shadow-xl">
-                <div className="font-['Noto_Serif_JP'] text-xl md:text-2xl lg:text-3xl text-gray-800 font-semibold tracking-wide leading-relaxed">
+              <div className="relative bg-gradient-to-r from-primary-50/90 via-white/95 to-primary-50/90 backdrop-blur-sm border border-primary-200/60 rounded-2xl py-12 px-8 md:px-12 shadow-xl">
+                <div className="font-['Noto_Serif_JP'] text-2xl md:text-3xl lg:text-4xl text-gray-800 font-semibold tracking-wide leading-relaxed">
                   あなたの想いを<br />確実に届けませんか？
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start relative z-20">
                 <a href="/contact" className="btn-primary text-lg whitespace-nowrap">
                   <svg className="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -107,9 +107,9 @@ const TargetAppeal = () => {
           <div 
             className="absolute bottom-0 right-0 z-10 hidden lg:block"
             style={{
-              transform: 'translateY(35%)',
-              width: '600px',
-              height: '400px'
+              transform: 'translate(50px, 25%)',
+              width: '700px',
+              height: '500px'
             }}
           >
             <img 

@@ -47,7 +47,7 @@ export async function DELETE(request: NextRequest) {
         }
       } catch (err) {
         console.error(`❌ ${table}の削除で予期せぬエラー:`, err)
-        results.push({ table, status: 'error', error: err.message })
+        results.push({ table, status: 'error', error: err instanceof Error ? err.message : 'Unknown error' })
       }
     }
 
@@ -69,7 +69,7 @@ export async function DELETE(request: NextRequest) {
   } catch (error) {
     console.error('❌ データリセットでエラー:', error)
     return NextResponse.json(
-      { error: 'Internal Server Error', details: error.message }, 
+      { error: 'Internal Server Error', details: error instanceof Error ? error.message : 'Unknown error' }, 
       { status: 500 }
     )
   }

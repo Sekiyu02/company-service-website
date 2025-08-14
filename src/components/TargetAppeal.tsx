@@ -1,6 +1,6 @@
 const TargetAppeal = () => {
   return (
-    <section id="target-appeal" className="section-padding bg-white relative overflow-visible">
+    <section id="target-appeal" className="pt-8 lg:pt-16 lg:pb-16 bg-white relative overflow-visible pb-0">
       <div className="container-custom">
         <div className="max-w-5xl mx-auto text-center relative">
           
@@ -89,7 +89,7 @@ const TargetAppeal = () => {
               </div>
               
               {/* モバイル・タブレット用画像 - ボタンの直後に配置 */}
-              <div className="lg:hidden mt-8 pb-8">
+              <div className="lg:hidden mt-8">
                 <img 
                   src="/images/target-appeal-bg.png" 
                   alt="映像制作チーム" 

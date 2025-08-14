@@ -3,6 +3,7 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Analytics from '@/components/Analytics'
+import ConditionalLayout from '@/components/ConditionalLayout'
 
 export const metadata: Metadata = {
   title: '株式会社富楽ファイン（フラクファイン）｜千葉の映像制作会社・動画制作・PR支援',
@@ -64,11 +65,9 @@ export default function RootLayout({
       </head>
       <body className="bg-white text-gray-900">
         <Analytics />
-        <Header />
-        <main>
+        <ConditionalLayout>
           {children}
-        </main>
-        <Footer />
+        </ConditionalLayout>
       </body>
     </html>
   )

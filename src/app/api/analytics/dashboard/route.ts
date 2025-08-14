@@ -18,14 +18,31 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    const thirtyDaysAgo = new Date()
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+    // URLパラメータから日付範囲を取得
+    const { searchParams } = new URL(request.url)
+    const startDate = searchParams.get('startDate')
+    const endDate = searchParams.get('endDate')
+
+    let fromDate: Date
+    let toDate: Date
+
+    if (startDate && endDate) {
+      fromDate = new Date(startDate)
+      toDate = new Date(endDate)
+      toDate.setHours(23, 59, 59, 999) // 終了日を23:59:59に設定
+    } else {
+      // デフォルト：過去30日間
+      toDate = new Date()
+      fromDate = new Date()
+      fromDate.setDate(fromDate.getDate() - 30)
+    }
 
     // 総ページビュー数を取得
     const { data: pageViewsData, error: pageViewsError } = await supabase
       .from('page_views')
       .select('*', { count: 'exact' })
-      .gte('timestamp', thirtyDaysAgo.toISOString())
+      .gte('timestamp', fromDate.toISOString())
+      .lte('timestamp', toDate.toISOString())
 
     if (pageViewsError) {
       console.error('Page views error:', pageViewsError)
@@ -35,7 +52,8 @@ export async function GET(request: NextRequest) {
     const { data: uniqueVisitorsData, error: uniqueVisitorsError } = await supabase
       .from('page_views')
       .select('session_id', { count: 'exact' })
-      .gte('timestamp', thirtyDaysAgo.toISOString())
+      .gte('timestamp', fromDate.toISOString())
+      .lte('timestamp', toDate.toISOString())
 
     if (uniqueVisitorsError) {
       console.error('Unique visitors error:', uniqueVisitorsError)
@@ -45,16 +63,19 @@ export async function GET(request: NextRequest) {
     const { data: topPagesData, error: topPagesError } = await supabase
       .from('page_views')
       .select('page_path')
-      .gte('timestamp', thirtyDaysAgo.toISOString())
+      .gte('timestamp', fromDate.toISOString())
+      .lte('timestamp', toDate.toISOString())
 
     if (topPagesError) {
       console.error('Top pages error:', topPagesError)
     }
 
-    // 最近のお問い合わせを取得
+    // 最近のお問い合わせを取得（指定期間内）
     const { data: recentContactsData, error: recentContactsError } = await supabase
       .from('contact_submissions')
       .select('*')
+      .gte('timestamp', fromDate.toISOString())
+      .lte('timestamp', toDate.toISOString())
       .order('timestamp', { ascending: false })
       .limit(10)
 
@@ -66,7 +87,8 @@ export async function GET(request: NextRequest) {
     const { data: dailyStatsData, error: dailyStatsError } = await supabase
       .from('page_views')
       .select('timestamp')
-      .gte('timestamp', thirtyDaysAgo.toISOString())
+      .gte('timestamp', fromDate.toISOString())
+      .lte('timestamp', toDate.toISOString())
 
     if (dailyStatsError) {
       console.error('Daily stats error:', dailyStatsError)
@@ -76,7 +98,8 @@ export async function GET(request: NextRequest) {
     const { data: sessionData, error: sessionError } = await supabase
       .from('page_sessions')
       .select('duration_seconds')
-      .gte('start_time', thirtyDaysAgo.toISOString())
+      .gte('start_time', fromDate.toISOString())
+      .lte('start_time', toDate.toISOString())
       .not('duration_seconds', 'is', null)
 
     if (sessionError) {
@@ -87,7 +110,8 @@ export async function GET(request: NextRequest) {
     const { data: clickEventsData, error: clickEventsError } = await supabase
       .from('click_events')
       .select('element_type, element_text')
-      .gte('timestamp', thirtyDaysAgo.toISOString())
+      .gte('timestamp', fromDate.toISOString())
+      .lte('timestamp', toDate.toISOString())
 
     if (clickEventsError) {
       console.error('Click events error:', clickEventsError)
@@ -121,9 +145,13 @@ export async function GET(request: NextRequest) {
       dailyCounts[date].views++
     })
 
-    for (let i = 29; i >= 0; i--) {
-      const date = new Date()
-      date.setDate(date.getDate() - i)
+    // 期間内の日数を計算
+    const timeDiff = toDate.getTime() - fromDate.getTime()
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24))
+
+    for (let i = 0; i <= daysDiff; i++) {
+      const date = new Date(fromDate)
+      date.setDate(fromDate.getDate() + i)
       const dateString = date.toISOString().split('T')[0]
       
       dailyStats.push({

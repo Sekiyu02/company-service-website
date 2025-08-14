@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 interface Analytics {
@@ -35,13 +36,32 @@ const AdminDashboard = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [userEmail, setUserEmail] = useState('')
+  const [isResetting, setIsResetting] = useState(false)
+  const [showResetConfirm, setShowResetConfirm] = useState(false)
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
   const router = useRouter()
   const supabase = createClientComponentClient()
 
   useEffect(() => {
     checkAuth()
+    
+    // デフォルトの日付範囲を設定（過去30日間）
+    const today = new Date()
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(today.getDate() - 30)
+    
+    setStartDate(thirtyDaysAgo.toISOString().split('T')[0])
+    setEndDate(today.toISOString().split('T')[0])
+    
     fetchAnalytics()
   }, [])
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      fetchAnalytics()
+    }
+  }, [startDate, endDate])
 
   const checkAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession()
@@ -67,7 +87,11 @@ const AdminDashboard = () => {
 
   const fetchAnalytics = async () => {
     try {
-      const response = await fetch('/api/analytics/dashboard')
+      const params = new URLSearchParams()
+      if (startDate) params.append('startDate', startDate)
+      if (endDate) params.append('endDate', endDate)
+      
+      const response = await fetch(`/api/analytics/dashboard?${params.toString()}`)
       
       if (!response.ok) {
         throw new Error('データの取得に失敗しました')
@@ -79,6 +103,39 @@ const AdminDashboard = () => {
       setError('アナリティクスデータの取得に失敗しました')
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const handleResetData = async () => {
+    if (!showResetConfirm) {
+      setShowResetConfirm(true)
+      return
+    }
+
+    setIsResetting(true)
+    setShowResetConfirm(false)
+
+    try {
+      const response = await fetch('/api/analytics/reset', {
+        method: 'DELETE'
+      })
+
+      if (!response.ok) {
+        throw new Error('リセットに失敗しました')
+      }
+
+      const result = await response.json()
+      console.log('Reset result:', result)
+      
+      // データを再取得
+      await fetchAnalytics()
+      
+      alert('アナリティクスデータをリセットしました')
+    } catch (error) {
+      console.error('Reset error:', error)
+      alert('データのリセットに失敗しました')
+    } finally {
+      setIsResetting(false)
     }
   }
 
@@ -135,9 +192,39 @@ const AdminDashboard = () => {
                 <h1 className="text-2xl font-bold text-gray-900">管理ダッシュボード</h1>
                 <p className="text-sm text-gray-500">株式会社富楽ファイン</p>
               </div>
+              <Link
+                href="/manage-fk-2024/monthly"
+                className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium"
+              >
+                月別分析
+              </Link>
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">{userEmail}</span>
+              <button
+                onClick={handleResetData}
+                disabled={isResetting}
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  showResetConfirm
+                    ? 'bg-red-600 text-white hover:bg-red-700'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                } ${isResetting ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                {isResetting
+                  ? 'リセット中...'
+                  : showResetConfirm
+                  ? '本当にリセット？'
+                  : 'データリセット'
+                }
+              </button>
+              {showResetConfirm && (
+                <button
+                  onClick={() => setShowResetConfirm(false)}
+                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-700 font-medium"
+                >
+                  キャンセル
+                </button>
+              )}
               <button
                 onClick={handleLogout}
                 className="px-4 py-2 text-sm text-red-600 hover:text-red-700 font-medium"
@@ -151,6 +238,50 @@ const AdminDashboard = () => {
 
       {/* メインコンテンツ */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* 期間選択 */}
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-gray-900">分析期間</h2>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <label htmlFor="startDate" className="text-sm font-medium text-gray-700">
+                  開始日:
+                </label>
+                <input
+                  type="date"
+                  id="startDate"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                />
+              </div>
+              <div className="flex items-center space-x-2">
+                <label htmlFor="endDate" className="text-sm font-medium text-gray-700">
+                  終了日:
+                </label>
+                <input
+                  type="date"
+                  id="endDate"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                />
+              </div>
+              <button
+                onClick={() => {
+                  const today = new Date()
+                  const thirtyDaysAgo = new Date()
+                  thirtyDaysAgo.setDate(today.getDate() - 30)
+                  setStartDate(thirtyDaysAgo.toISOString().split('T')[0])
+                  setEndDate(today.toISOString().split('T')[0])
+                }}
+                className="px-4 py-2 text-sm bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+              >
+                過去30日
+              </button>
+            </div>
+          </div>
+        </div>
         {/* 統計カード */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow-sm p-6">
@@ -158,7 +289,9 @@ const AdminDashboard = () => {
             <p className="text-3xl font-bold text-gray-900">
               {analytics?.totalPageViews.toLocaleString() || 0}
             </p>
-            <p className="text-xs text-gray-500 mt-2">過去30日間</p>
+            <p className="text-xs text-gray-500 mt-2">
+              {startDate && endDate ? `${startDate} ～ ${endDate}` : '過去30日間'}
+            </p>
           </div>
 
           <div className="bg-white rounded-xl shadow-sm p-6">
@@ -166,7 +299,9 @@ const AdminDashboard = () => {
             <p className="text-3xl font-bold text-gray-900">
               {analytics?.uniqueVisitors.toLocaleString() || 0}
             </p>
-            <p className="text-xs text-gray-500 mt-2">過去30日間</p>
+            <p className="text-xs text-gray-500 mt-2">
+              {startDate && endDate ? `${startDate} ～ ${endDate}` : '過去30日間'}
+            </p>
           </div>
 
           <div className="bg-white rounded-xl shadow-sm p-6">
@@ -182,7 +317,9 @@ const AdminDashboard = () => {
             <p className="text-3xl font-bold text-gray-900">
               {analytics ? `${Math.round(analytics.bounceRate)}%` : '0%'}
             </p>
-            <p className="text-xs text-gray-500 mt-2">過去30日間</p>
+            <p className="text-xs text-gray-500 mt-2">
+              {startDate && endDate ? `${startDate} ～ ${endDate}` : '過去30日間'}
+            </p>
           </div>
         </div>
 

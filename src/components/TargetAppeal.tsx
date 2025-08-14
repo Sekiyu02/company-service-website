@@ -1,6 +1,6 @@
 const TargetAppeal = () => {
   return (
-    <section id="target-appeal" className="pt-8 lg:pt-16 lg:pb-16 bg-white relative overflow-visible pb-0">
+    <section id="target-appeal" className="pt-8 pb-0 lg:section-padding bg-white relative lg:overflow-visible">
       <div className="container-custom">
         <div className="max-w-5xl mx-auto text-center relative">
           
@@ -107,7 +107,7 @@ const TargetAppeal = () => {
           <div 
             className="absolute bottom-0 right-0 z-10 hidden lg:block"
             style={{
-              transform: 'translateY(30%)',
+              transform: 'translateY(20%)',
               width: '600px',
               height: '400px'
             }}

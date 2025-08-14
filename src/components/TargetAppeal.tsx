@@ -87,21 +87,20 @@ const TargetAppeal = () => {
                   サービスを見る
                 </a>
               </div>
+              
+              {/* モバイル・タブレット用画像 - ボタンの直後に配置 */}
+              <div className="lg:hidden mt-8 pb-8">
+                <img 
+                  src="/images/target-appeal-bg.png" 
+                  alt="映像制作チーム" 
+                  className="w-full object-contain mx-auto"
+                  style={{ maxWidth: '500px', maxHeight: '400px' }}
+                />
+              </div>
             </div>
             
             {/* 右側の画像スペース - デスクトップのみ */}
             <div className="hidden lg:block lg:w-1/2"></div>
-          </div>
-
-          {/* 画像 - モバイルとデスクトップで異なる配置 */}
-          {/* モバイル・タブレット用画像 */}
-          <div className="lg:hidden mt-8 mb-4">
-            <img 
-              src="/images/target-appeal-bg.png" 
-              alt="映像制作チーム" 
-              className="w-full max-w-md mx-auto object-contain"
-              style={{ maxHeight: '300px' }}
-            />
           </div>
           
           {/* デスクトップ用画像 */}

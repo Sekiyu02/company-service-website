@@ -70,7 +70,7 @@ const TargetAppeal = () => {
             <div className="lg:w-1/2 lg:pr-8 space-y-6 text-center lg:text-left">
               <div className="relative bg-gradient-to-r from-primary-50/90 via-white/95 to-primary-50/90 backdrop-blur-sm border border-primary-200/60 rounded-2xl py-8 px-6 md:px-8 shadow-xl">
                 <div className="font-['Noto_Serif_JP'] text-xl md:text-2xl lg:text-3xl text-gray-800 font-semibold tracking-wide leading-relaxed">
-                  あなたの想いを、<br className="sm:hidden" />確実に届けませんか？
+                  あなたの想いを<br />確実に届けませんか？
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -107,7 +107,7 @@ const TargetAppeal = () => {
           <div 
             className="absolute bottom-0 right-0 z-10 hidden lg:block"
             style={{
-              transform: 'translateY(20%)',
+              transform: 'translateY(35%)',
               width: '600px',
               height: '400px'
             }}

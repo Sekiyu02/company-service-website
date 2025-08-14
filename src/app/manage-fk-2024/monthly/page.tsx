@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Head from 'next/head'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 interface MonthlyData {
@@ -107,7 +108,13 @@ const MonthlyAnalytics = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
+      <Head>
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+        <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+        <title>管理画面 - 月別分析</title>
+      </Head>
+      <div className="min-h-screen bg-gray-50">
       {/* ヘッダー */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -240,7 +247,8 @@ const MonthlyAnalytics = () => {
           </div>
         </div>
       </main>
-    </div>
+      </div>
+    </>
   )
 }
 

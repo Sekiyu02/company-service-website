@@ -14,6 +14,12 @@ const Analytics = () => {
   })
 
   useEffect(() => {
+    // 管理ページは追跡しない
+    if (pathname.startsWith('/manage-fk-2024')) {
+      console.log('Analytics disabled for admin pages')
+      return
+    }
+
     // Supabaseアナリティクスを有効化
     console.log('Analytics enabled with Supabase')
     // セッションIDを生成（初回訪問時のみ）
